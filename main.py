@@ -17,7 +17,7 @@ logging.basicConfig(datefmt='%d/%m/%Y %I:%M:%S %p',
                     filemode='w',
                     filename='logs.log',
                     format='%(levelname)s %(asctime)s: %(message)s',
-                    level=logging.DEBUG
+                    level=logging.INFO
                     )
 
 logging.debug('Prueba')
