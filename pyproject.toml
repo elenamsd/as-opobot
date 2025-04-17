@@ -3,7 +3,9 @@ name = "as-opobot"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "Your Name",email = "you@example.com"}
+    {name = "Elena Sacramento",email = "alu0100884524@ull.edu.es"},
+    {name = "Míriam Núñez",email = "alu0100945621@ull.edu.es"},
+    {name = "Rebeca Rodríguez",email = "alu0101394763@ull.edu.es"}
 ]
 readme = "README.md"
 requires-python = ">=3.9"
