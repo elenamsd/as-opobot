@@ -40,6 +40,24 @@ Incluye dentro las siguientes variables:
 API_KEY=""
 ```
 
+## 🐳 Inicializa la base de datos
+
+```bash
+docker build -t opobot-db .
+```
+
+```bash
+docker run -d \
+  --name opobot-db \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=opobot \
+  -p 5432:5432 \
+  opobot-db
+```
+
+Para más información sobre la base de datos, consulta el [README de la base de datos](docs/db-commands.md).
+
 ## ▶️ Ejecución del bot
 
 ```bash
