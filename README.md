@@ -28,6 +28,11 @@ pip install poetry
 poetry install
 ```
 
+### 📥 Añadir dependencia a poetry:
+```bash
+poetry add <paquete>
+```
+
 ## 🔑 Variables de entorno
 
 Crea un fichero con las variables de entorno:
@@ -57,6 +62,13 @@ docker run -d \
 ```
 
 Para más información sobre la base de datos, consulta el [README de la base de datos](docs/db-commands.md).
+
+
+## 🚀 Ejecución de la API
+```bash
+python3 api/main.py
+```
+
 
 ## ▶️ Ejecución del bot
 
