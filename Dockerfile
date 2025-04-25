@@ -1,10 +1,9 @@
-FROM mysql:latest
+FROM mongo:latest
 
-ENV MYSQL_ROOT_PASSWORD=root_password
-ENV MYSQL_DATABASE=oppositions
-ENV MYSQL_USER=user
-ENV MYSQL_PASSWORD=user
+ENV MONGO_INITDB_ROOT_USERNAME=root
+ENV MONGO_INITDB_ROOT_PASSWORD=root_password
+ENV MONGO_INITDB_DATABASE=opobot
 
-COPY init.sql /docker-entrypoint-initdb.d/
+COPY data/init.js /docker-entrypoint-initdb.d/
 
-EXPOSE 3306
+EXPOSE 27017

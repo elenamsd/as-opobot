@@ -49,10 +49,10 @@ docker build -t opobot-db .
 ```bash
 docker run -d \
   --name opobot-db \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=opobot \
-  -p 5432:5432 \
+  -e MONGO_INITDB_ROOT_USERNAME=root \
+  -e MONGO_INITDB_ROOT_PASSWORD=root_password \
+  -e MONGO_INITDB_DATABASE=opobot \
+  -p 27017:27017 \
   opobot-db
 ```
 

@@ -5,18 +5,30 @@ docker exec -it opobot-db bash
 
 Accede a la base de datos
 ```bash
-mysql -u user -p
+mongosh --username root --password root_password --authenticationDatabase admin
 ```
 
 Dentro de la base de datos
 ```bash
-USE oppositions;
+use opobot
 ```
 
+Ver las bases de datos disponibles
 ```bash
-SELECT * FROM oppositions;
+show dbs
 ```
 
+Ver las colecciones disponibles
 ```bash
-SELECT * FROM user_opposition;
+show collections
+```
+
+Ver las colecciones de las oposiciones
+```bash
+db.opposition.find()
+```
+
+Ver las colecciones de los usuarios
+```bash
+db.user.find()
 ```
