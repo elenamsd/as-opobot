@@ -69,6 +69,9 @@ Para más información sobre la base de datos, consulta el [README de la base de
 python3 api/main.py
 ```
 
+Para probar la API:
+http://localhost:8000/data/<nombre_collecion>
+
 
 ## ▶️ Ejecución del bot
 
