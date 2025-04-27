@@ -1,6 +1,7 @@
 import re
 import json
 from unidecode import unidecode
+from fuzzywuzzy import fuzz
 
 def cargar_diccionario_sinonimos(ruta_diccionario):
     """
@@ -35,22 +36,27 @@ def obtener_similares(palabra, diccionario_sinonimos):
     """
     Obtiene palabras similares a la palabra de entrada utilizando un diccionario de sinónimos.
     :param palabra: palabra clave
-    :param diccionario_sinonimos: Diccionario que contiene palabras clave y sinónimos
-    :param top_n: número de palabras similares a obtener
-    :return: lista de palabras similares
+    :param diccionario_sinonimos: Diccionario que contiene palabras clave y sus sinónimos
+    :return: lista de filas con palabras similares
     """
     palabra_limpia = unidecode(palabra.strip().lower())
 
-    palabras_similares = set()
+    filas_similares = []
 
     for clave, sinomimos in diccionario_sinonimos.items():
-        if palabra_limpia == clave:
-            palabras_similares.update(sinomimos)
-        elif palabra_limpia in sinomimos:
-            palabras_similares.add(unidecode(clave.strip().lower()))
+        # Comparar palabra ingresada con todos los sinónimos de la clave
+        for sinonimo in sinomimos:
+            similitud_sinonimo = fuzz.ratio(palabra_limpia, sinonimo)
+            if similitud_sinonimo > 80:  # Umbral de similitud
+                filas_similares.append({'clave': clave, 'sinonimos': sinomimos})
+        
+        # Comparar palabra ingresada con la clave
+        similitud_clave = fuzz.ratio(palabra_limpia, clave)
+        if similitud_clave > 80:  # Umbral de similitud
+            filas_similares.append({'clave': clave, 'sinonimos': sinomimos})
 
-    palabras_similares.add(palabra_limpia)
-    return list(palabras_similares)
+    return filas_similares
+
 
 def buscar_convocatorias(palabras_clave, dataset, diccionario_sinonimos):
     """
@@ -63,19 +69,28 @@ def buscar_convocatorias(palabras_clave, dataset, diccionario_sinonimos):
     palabras = re.split(r'[,\s]+', palabras_clave.strip().lower())
     palabras = [unidecode(p).strip() for p in palabras if p]
 
-    palabras_con_similares = []
+    filas_con_similares = []
     for palabra in palabras:
         similares = obtener_similares(palabra, diccionario_sinonimos)
-        palabras_con_similares.extend(similares)
+        filas_con_similares.extend(similares)
+
+    # Crear un array con todas las palabras sin mayúsculas ni tildes
+    palabras_encontradas = []
+    for fila in filas_con_similares:
+        clave = unidecode(fila['clave'].lower())
+        palabras_encontradas.append(clave)
+        for sinonimo in fila['sinonimos']:
+            sinonimo = unidecode(sinonimo.lower())
+            palabras_encontradas.append(sinonimo)
     
-    print(palabras_con_similares)
+    print(palabras_encontradas)
     
     resultados = []
 
     for item in dataset:
         titulo = unidecode(item.get('title', '').lower())
 
-        coincidencias = sum(1 for palabra in palabras_con_similares if palabra in titulo)
+        coincidencias = sum(1 for palabra in palabras_encontradas if palabra in titulo)
 
         if coincidencias > 0:
             item['coincidencias'] = coincidencias

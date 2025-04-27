@@ -27,6 +27,7 @@ pip install poetry
 ```bash
 pip install aiohttp
 pip install unidecode
+pip install fuzzywuzzy python-Levenshtein
 ```
 
 ### 📥 Instala las dependencias del proyecto:

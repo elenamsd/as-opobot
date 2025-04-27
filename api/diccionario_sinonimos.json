@@ -1,6 +1,5 @@
 {
-  "informático": ["programador", "desarrollador", "ingeniero informático", "especialista en TI", "técnico en informática", "analista de sistemas", "consultor IT"],
-  "desarrollador": ["programador", "informático", "ingeniero de software", "desarrollador web", "desarrollador de aplicaciones", "ingeniero en programación", "dev"],
+  "informático": ["programador", "desarrollador", "ingeniero informático", "especialista en TI", "técnico en informática", "analista de sistemas", "consultor IT", "ingeniero de software", "desarrollador web", "desarrollador de aplicaciones", "ingeniero en programación", "dev"],
   "abogado": ["jurista", "letrado", "licenciado en derecho", "abogado de oficio", "defensor", "asesor legal", "consultor legal"],
   "profesor": ["maestro", "docente", "educador", "enseñante", "instructor", "formador", "tutor", "mentor"],
   "médico": ["doctor", "especialista", "cirujano", "enfermero", "médico de cabecera", "médico general", "cardiólogo", "dermatólogo"],
