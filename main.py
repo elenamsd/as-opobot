@@ -1,5 +1,6 @@
 import os
 import logging
+import aiohttp
 
 from typing import Final
 from dotenv import load_dotenv
@@ -39,8 +40,43 @@ async def custom_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # Responses
 
-def handle_response(text: str) -> str:
+async def handle_response(text: str) -> str:
     processed: str = text.lower()
+    query = text.replace(' ', '%20')
+    # Preparar la URL
+    base_url = "http://localhost:8000/buscar/"  # Ajusta el puerto si es diferente
+    url = f"{base_url}?q={query}"
+    
+    async with aiohttp.ClientSession() as session:
+        try:
+            async with session.get(url) as response:
+                if response.status == 200:
+                    data = await response.json()
+
+                    if not data:
+                        return "No encontré resultados que coincidan 😔"
+
+                    # Formatear los resultados
+                    formatted_results = []
+                    for item in data[:3]:  # Los 3 más relevantes
+                        formatted = (
+                            f"📚 *{item['title']}*\n"
+                            f"🏢 Fuente: {item['source']}\n"
+                            f"📅 Inicio: {item['start_date'][:10]}\n"
+                            f"📅 Fin: {item['end_date'][:10] if item['end_date'] else 'Sin fecha de fin'}\n"
+                            f"📌 Estado: {item['status']}\n"
+                            f"🔗 [Ver convocatoria]({item['url']})\n"
+                            f"⭐ Coincidencias: {item.get('coincidencias', 0)}\n"
+                            "-------------------------\n"
+                        )
+                        formatted_results.append(formatted)
+
+                    return "\n".join(formatted_results)
+
+                else:
+                    return f"Error consultando las convocatorias 😵 ({response.status})"
+        except Exception as e:
+            return f"Error: {str(e)}"
 
     if 'hello' in processed:
         return 'Hey there'
@@ -60,14 +96,14 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if message_type == 'group':
         if BOT_USERNAME in text:
             new_text: str = text.replace(BOT_USERNAME, '').strip
-            response: str = handle_response(new_text)
+            response: str = await handle_response(new_text)
         else:
             return
     else:
-        response: str = handle_response(text)
+        response: str = await handle_response(text)
 
     logging.info(f"Bot: {response}")
-    await update.message.reply_text(response)
+    await update.message.reply_text(response, parse_mode='Markdown')
 
 
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
