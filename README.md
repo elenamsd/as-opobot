@@ -23,9 +23,10 @@ source venv/bin/activate
 pip install poetry
 ```
 
-### 🚀 Instala AIOHTTP:
+### 🚀 Instala Otras dependencias:
 ```bash
 pip install aiohttp
+pip install unidecode
 ```
 
 ### 📥 Instala las dependencias del proyecto:

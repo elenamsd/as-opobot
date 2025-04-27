@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 import json
 from db import get_collection_data
-from logic import buscar_convocatorias
+from logic import buscar_convocatorias, cargar_diccionario_sinonimos
 
 class SimpleAPIHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -38,10 +38,11 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
                 import os
                 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
                 DATA_FILE = os.path.join(BASE_DIR, "data_fake.json")
+                DICT_FILE = os.path.join(BASE_DIR, "diccionario_sinonimos.json")
                 with open(DATA_FILE, "r", encoding="utf-8") as f:
                     data = json.load(f)
-
-                resultados = buscar_convocatorias(palabras, data)
+                diccionario_sinonimos = cargar_diccionario_sinonimos(DICT_FILE)
+                resultados = buscar_convocatorias(palabras, data, diccionario_sinonimos)
 
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json")
