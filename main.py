@@ -191,7 +191,7 @@ async def unknown_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # Texto libre no reconocido por el bot (p. ej.: "fuhsjdkfgjh", "hola", ...)
 async def unknown_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("🤖 No he entendido ese mensaje. Usa /help para ver los comandos disponibles.")
+    await update.message.reply_text("❌ No te he entendido. Usa /help para ver los comandos disponibles.")
 
 # Manejo de errores
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
