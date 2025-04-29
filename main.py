@@ -278,7 +278,7 @@ if __name__ == '__main__':
     async def set_commands():
         await app.bot.set_my_commands(COMMANDS)
 
-    app.post_init(set_commands)
+    app = Application.builder().token(TOKEN).post_init(set_commands).build()
 
     # Polls the bot
     print('Polling...')
