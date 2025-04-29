@@ -169,7 +169,7 @@ async def buscar_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("😔 No hay convocatorias que coincidan con tus intereses.")
         else:
             lines = []
-            for doc in resultados: 
+            for doc in resultados[:10]: 
                 lines.append("\n".join([
                     f"📚 *{doc['nombre']}*",
                     f"🏢 Fuente: {doc.get('fuente','')}",
