@@ -50,38 +50,16 @@ touch .env
 Incluye dentro las siguientes variables:
 ```env
 API_KEY=""
+BOT_USERNAME=
+MONGO_DB_URI=
+DB_NAME=
 ```
 
-## 🐳 Inicializa la base de datos
-
+## ▶️ Ejecución del bot:
 ```bash
-docker build -t opobot-db .
+poetry run python main.py
 ```
-
-```bash
-docker run -d \
-  --name opobot-db \
-  -e MONGO_INITDB_ROOT_USERNAME=root \
-  -e MONGO_INITDB_ROOT_PASSWORD=root_password \
-  -e MONGO_INITDB_DATABASE=opobot \
-  -p 27017:27017 \
-  opobot-db
-```
-
-Para más información sobre la base de datos, consulta el [README de la base de datos](docs/db-commands.md).
-
-
-## 🚀 Ejecución de la API
-```bash
-python3 api/main.py
-```
-
-Para probar la API:
-http://localhost:8000/data/<nombre_collecion>
-
-
-## ▶️ Ejecución del bot
-
+Sin poetry:
 ```bash
 python3 main.py
 ```
