@@ -275,8 +275,8 @@ if __name__ == '__main__':
     ]
 
     # Establecer los comandos visibles en el menú de Telegram
-    async def set_commands():
-        await app.bot.set_my_commands(COMMANDS)
+    async def set_commands(application):
+        await application.bot.set_my_commands(COMMANDS)
 
     app = Application.builder().token(TOKEN).post_init(set_commands).build()
 
