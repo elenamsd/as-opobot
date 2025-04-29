@@ -5,8 +5,8 @@ from zoneinfo import ZoneInfo
 
 from typing import Final
 from dotenv import load_dotenv
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram import BotCommand, Update
+from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 from pymongo import MongoClient, errors
 
 load_dotenv()
@@ -169,7 +169,7 @@ async def buscar_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("😔 No hay convocatorias que coincidan con tus intereses.")
         else:
             lines = []
-            for doc in resultados[:10]: 
+            for doc in resultados[:10]:
                 lines.append("\n".join([
                     f"📚 *{doc['nombre']}*",
                     f"🏢 Fuente: {doc.get('fuente','')}",
@@ -184,6 +184,14 @@ async def buscar_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("❌ Error buscando convocatorias.")
     finally:
         client.close()
+
+# Comandos desconocidos por el bot
+async def unknown_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("❌ No existe el comando especificado. Usa /help para ver los disponibles.")
+
+# Texto libre no reconocido por el bot (p. ej.: "fuhsjdkfgjh", "hola", ...)
+async def unknown_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("🤖 No he entendido ese mensaje. Usa /help para ver los comandos disponibles.")
 
 # Manejo de errores
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -242,6 +250,8 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler("quitar_interes", remove_interest))
     app.add_handler(CommandHandler("mis_intereses", list_interests))
     app.add_handler(CommandHandler("buscar", buscar_command))
+    app.add_handler(MessageHandler(filters.COMMAND, unknown_command))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, unknown_message))
 
     # Errors
     app.add_error_handler(error)
@@ -252,6 +262,23 @@ if __name__ == '__main__':
         time=dt_time(hour=6, minute=0, second=0, tzinfo=ZoneInfo("Atlantic/Canary")),
         name="daily_opp_notifications"
     )
+
+
+    # Lista de comandos del bot (los que quieres que salgan al escribir "/")
+    COMMANDS = [
+        BotCommand("start", "Mostrar mensaje de bienvenida"),
+        BotCommand("help", "Mostrar la ayuda del bot"),
+        BotCommand("interes", "Añadir un tema de interés"),
+        BotCommand("quitar_interes", "Eliminar un tema de interés"),
+        BotCommand("mis_intereses", "Ver tus intereses"),
+        BotCommand("buscar", "Buscar convocatorias según tus intereses"),
+    ]
+
+    # Establecer los comandos visibles en el menú de Telegram
+    async def set_commands():
+        await app.bot.set_my_commands(COMMANDS)
+
+    app.post_init(set_commands)
 
     # Polls the bot
     print('Polling...')
