@@ -263,23 +263,6 @@ if __name__ == '__main__':
         name="daily_opp_notifications"
     )
 
-
-    # Lista de comandos del bot (los que quieres que salgan al escribir "/")
-    COMMANDS = [
-        BotCommand("start", "Mostrar mensaje de bienvenida"),
-        BotCommand("help", "Mostrar la ayuda del bot"),
-        BotCommand("interes", "Añadir un tema de interés"),
-        BotCommand("quitar_interes", "Eliminar un tema de interés"),
-        BotCommand("mis_intereses", "Ver tus intereses"),
-        BotCommand("buscar", "Buscar convocatorias según tus intereses"),
-    ]
-
-    # Establecer los comandos visibles en el menú de Telegram
-    async def set_commands(application):
-        await application.bot.set_my_commands(COMMANDS)
-
-    app = Application.builder().token(TOKEN).post_init(set_commands).build()
-
     # Polls the bot
     print('Polling...')
     app.run_polling(poll_interval=3)
